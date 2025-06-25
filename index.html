@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/png" href="public/LiesofPfavIco.png" />
+  <title>Lies of P Deaths</title>
+  <link rel="stylesheet" href="public/styles.css" />
+</head>
+<body>
+    <div class="logo-container">
+      <img src="public/LiesofPDeathBanner2.png" alt="Lies of P Deaths" class="logo" /></div>
+    <div class="full">
+<div class="layout">
+    <div class="dummy container"></div>
+  <div class="save container">
+
+    <label class="nocopy file-upload">
+        <input type="file" id="upload" />
+        <span id="upload-label">Open Save File</span>
+    </label>
+    <p id="error-message" class="error hidden">No stats found. This does not appear to be a valid Lies of P save file.</p>
+<div id="subtitle-group">
+    <p class="subtitle">Save File Format: <code><b>SaveData-X_Character_2.sav</b></code></p>
+    <p class="subtitle">• <code>X</code> = Unique character. (Different characters if you have played trough on different saves)</p>
+
+    <p class="subtitle">📁 Save Location (Steam):</p>
+    <p class="subtitle"><code>C:\Program Files (x86)\Steam\steamapps\common\LiesofP\Saved\SaveGames\[YourSteamID]</code></p>
+    <p class="subtitle">📁 Save Location (Xbox Pass):</p>
+    <p class="subtitle"><code>%AppData%\Local\Packages\Neowiz.(specific digits)\SystemAppData\wgs</code></p>
+</div>
+    <div id="results" class="results hidden">
+    <h2>Stats</h2>
+    <ul id="statList">
+        <li><strong>Deaths:</strong> <span id="deathCount">0</span></li>
+        <li><strong>Damage Taken:</strong> <span id="damageTaken">0</span></li>
+        <li><strong>Player Level:</strong> <span id="playerLevel">0</span></li>
+
+    </ul>
+    </div>
+
+  </div>
+<div class="container minus2">
+  <div class="how-it-works">
+    <h3>How LiesOfPDeaths works?</h3>
+    <ol>
+      <li>Open save file from your computer.</li>
+      <li>A script will be run locally to get your save stats.<br>Don't worry - nothing is sent to any server.</li>
+      <li>You can see stats and share them with friends!</li>
+    </ol>
+</div>
+</div>
+</div>
+</div>
+
+    <footer>
+      <p>Made by <a href="/" target="_blank">RepTours</a></p>
+    </footer>
+<p id="how-it-works-c">Lies of P is © NEOWIZ & Round8 Studio. This site is not affiliated with or endorsed by either company. All trademarks and copyrights are the property of their respective owners.</p>
+  <script src="main.js"></script>
+</body>
+</html>

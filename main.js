@@ -38,7 +38,6 @@ document.getElementById("upload").addEventListener("change", function (e) {
             if (!results.hasOwnProperty("CharacterPlayTime")) {
                 delete results.CharacterPlayTime;
             }
-console.log("Parsed results:", results);
 
             renderStats(results);
             error.classList.add('hidden');
@@ -150,7 +149,6 @@ function extractDoubleProperty(buffer, key) {
             typeIdx++;
         }
         if (!foundType) {
-            console.log(`❌ Fant ${key}, men ikke DoubleProperty etterpå (offset ${offset})`);
             continue;
         }
 
@@ -158,13 +156,11 @@ function extractDoubleProperty(buffer, key) {
         if (valueOffset + 8 > buffer.byteLength) continue;
 
         const val = view.getFloat64(valueOffset, true);
-        console.log(`✅ Fant ${key}: ${val} (offset ${offset})`);
 
         if (val > 0 && val < 1e8) {
             return val;
         }
     }
-    console.log(`❌ Fant ikke gyldig ${key}`);
     return null;
 }
 
@@ -197,7 +193,6 @@ function renderStats(stats) {
 
         li.innerHTML = `<strong>${label}:</strong> ${displayValue}`;
         list.appendChild(li);
-        console.log("Rendering stat:", label, displayValue);
     }
 
     document.getElementById("results").classList.remove("hidden");

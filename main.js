@@ -7,9 +7,23 @@ document.getElementById("upload").addEventListener("change", function (e) {
         const buffer = reader.result;
         const results = {};
 
-        for (const key of ["YouDieCount", "TotalReceiveDamage", "PlayerLevel"]) {
-            const val = extractIntProperty(buffer, key);
+        for (const key of ["YouDieCount", "TotalReceiveDamage", "PlayerLevel", "CharacterPlayTime"]) {
+            let val;
+            if (key === "CharacterPlayTime") {
+                val = extractDoubleProperty(buffer, key);
+            } else {
+                val = extractIntProperty(buffer, key);
+            }
             if (val !== null) results[key] = val;
+        }
+        
+        if ("CharacterPlayTime" in results && typeof results.CharacterPlayTime === "number") {
+            const totalSeconds = results.CharacterPlayTime;
+            const h = Math.floor(totalSeconds / 3600);
+            const m = Math.floor((totalSeconds % 3600) / 60);
+            const s = Math.floor(totalSeconds % 60);
+            results.CharacterPlayTime =
+                h > 0 ? `${h}h ${m}m` : m > 0 ? `${m}m ${s}s` : `${s}s`;
         }
 
         const error = document.getElementById('error-message');
@@ -20,6 +34,11 @@ document.getElementById("upload").addEventListener("change", function (e) {
             // Default missing stats to 0
             if (!results.YouDieCount) results.YouDieCount = 0;
             if (!results.TotalReceiveDamage) results.TotalReceiveDamage = 0;
+            if (!results.PlayerLevel) results.PlayerLevel = 0;
+            if (!results.hasOwnProperty("CharacterPlayTime")) {
+                delete results.CharacterPlayTime;
+            }
+console.log("Parsed results:", results);
 
             renderStats(results);
             error.classList.add('hidden');
@@ -51,10 +70,6 @@ document.getElementById('upload').addEventListener('change', function () {
     results.classList.add('hidden');
   }
 });
-
-document.getElementById("deathCount").textContent = parsedSaveData.YouDieCount;
-document.getElementById("damageTaken").textContent = parsedSaveData.TotalReceiveDamage;
-document.getElementById("playerLevel").textContent = parsedSaveData.PlayerLevel;
 
 function extractIntProperty(buffer, key) {
     const view = new DataView(buffer);
@@ -101,6 +116,58 @@ function extractIntProperty(buffer, key) {
     return null;
 }
 
+function extractDoubleProperty(buffer, key) {
+    const view = new DataView(buffer);
+    const decoder = new TextDecoder("utf-8");
+
+    const keyBytes = new TextEncoder().encode(key + "\0");
+    const dpBytes = new TextEncoder().encode("DoubleProperty\0");
+
+    for (let offset = 0; offset < buffer.byteLength - keyBytes.length; offset++) {
+        let match = true;
+        for (let i = 0; i < keyBytes.length; i++) {
+            if (view.getUint8(offset + i) !== keyBytes[i]) {
+                match = false;
+                break;
+            }
+        }
+        if (!match) continue;
+
+        let foundType = false;
+        let typeIdx = offset + keyBytes.length;
+        while (typeIdx < buffer.byteLength - dpBytes.length) {
+            let matchType = true;
+            for (let i = 0; i < dpBytes.length; i++) {
+                if (view.getUint8(typeIdx + i) !== dpBytes[i]) {
+                    matchType = false;
+                    break;
+                }
+            }
+            if (matchType) {
+                foundType = true;
+                break;
+            }
+            typeIdx++;
+        }
+        if (!foundType) {
+            console.log(`❌ Fant ${key}, men ikke DoubleProperty etterpå (offset ${offset})`);
+            continue;
+        }
+
+        const valueOffset = typeIdx + dpBytes.length + 4 + 1 + 4;
+        if (valueOffset + 8 > buffer.byteLength) continue;
+
+        const val = view.getFloat64(valueOffset, true);
+        console.log(`✅ Fant ${key}: ${val} (offset ${offset})`);
+
+        if (val > 0 && val < 1e8) {
+            return val;
+        }
+    }
+    console.log(`❌ Fant ikke gyldig ${key}`);
+    return null;
+}
+
 // Helper: guess length of next FString
 function dataLengthFString(bytes, offset) {
     if (offset + 4 > bytes.length) return null;
@@ -112,19 +179,28 @@ function renderStats(stats) {
     const list = document.getElementById("statList");
     list.innerHTML = "";
 
-        const labelMap = {
-            YouDieCount: "Deaths",
-            TotalReceiveDamage: "Damage Taken",
-            PlayerLevel: "Player Level"
-        };
+    const labelMap = {
+        YouDieCount: "Deaths",
+        TotalReceiveDamage: "Damage Taken",
+        PlayerLevel: "Player Level",
+        CharacterPlayTime: "Play Time"
+    };
 
     for (const [key, value] of Object.entries(stats)) {
         const li = document.createElement("li");
-        const label = labelMap[key] || key; // fallback to key if no mapping
-        li.innerHTML = `<strong>${label}:</strong> ${value}`;
+        const label = labelMap[key] || key;
+
+        let displayValue = value;
+        if (typeof value === "number") {
+            displayValue = value.toLocaleString("nb-NO");
+        }
+
+        li.innerHTML = `<strong>${label}:</strong> ${displayValue}`;
         list.appendChild(li);
+        console.log("Rendering stat:", label, displayValue);
     }
 
     document.getElementById("results").classList.remove("hidden");
 }
+
 

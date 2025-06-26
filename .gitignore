@@ -39,5 +39,6 @@ next-env.d.ts
 
 # Rand
 test*.py
+*.sav
 
 # End of https://www.toptal.com/developers/gitignore/api/nextjs

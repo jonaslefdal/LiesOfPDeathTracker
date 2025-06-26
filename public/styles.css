@@ -67,6 +67,9 @@ body {
   font-size: clamp(0.7rem, 1.2vw, 1rem);
   color: #aaa;
   margin-top: 1rem;
+  word-break: break-word;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 
@@ -76,9 +79,9 @@ input[type="file"] {
 
 .file-upload {
   display: flex;
-  justify-content: center;
+  margin: 2rem auto;
   align-items: center;
-  margin: 2rem 0;
+  justify-content: center;
   max-width: 60vw;
   width: 438px;
   height: 70px;

@@ -132,6 +132,11 @@ footer {
   color: #fff;
   text-align: center;
   margin-top: 4rem;
+  width: 100%;
+}
+
+footer p {
+  margin: 0.5rem;
 }
 
 footer a {
@@ -169,13 +174,42 @@ footer a {
 .how-it-works li {
   margin-bottom: 0.8rem;
 }
+
+.footer-bottom {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  margin-top: 0.5rem;
+  position: relative;
+  justify-content: flex-end;
+}
 #how-it-works-c {
   text-align: center;
   font-size: 0.5rem;
   color: #888;
-  margin: 1rem auto 1rem auto;
+  margin: 0.5rem auto 0.3rem auto;
   max-width: 90%;
+  width: 33.3333%;
   position: static;
+}
+
+.visit {
+  display: flex;
+  width: 33.3333%;
+  justify-content: flex-end;
+}
+
+.visitor-badge {
+  align-items: end;
+  width: 3rem;
+  height: auto;
+  opacity: 0.58;
+  margin-right: 1rem;
+}
+.decoy {
+  width: 33.3333%;
+  height: auto;
 }
 
 .save {
@@ -235,6 +269,22 @@ footer a {
   
   .container {
     min-width: 100px;
+  }
+}
+@media screen and (max-width: 958px) {
+  .decoy {
+    display: none;
+  }
+  .footer-bottom {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+  .visit {
+    justify-content: center;
+    margin: 0.3rem 0 0.1rem 0;
+  }
+  #how-it-works-c {
+    width: 85%;
   }
 }
 

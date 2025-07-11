@@ -165,6 +165,10 @@ footer a {
   color: #ffce3d;
   margin-top: 0;
 }
+.how-it-works h3 a{
+  color: black;
+  margin-top: 0;
+}
 
 .how-it-works ol {
   margin: 0;
@@ -217,7 +221,7 @@ footer a {
 }
 
 .minus2 {
-  margin-top: 5%;
+  margin-top: 1%;
 }
 
 @media screen and (max-width: 1405px) {
@@ -324,4 +328,27 @@ footer a {
 
 .download-btn:hover {
   background-color: #801c1c;
+}
+
+.live-tracker-cta {
+  margin-top: 1.5rem;
+  padding: 1.2rem;
+  background: linear-gradient(145deg, #1a1a1a, #232323);
+  border-radius: 6px;
+  border-left: 4px solid #a03232;
+  color: #ddd;
+  box-shadow: 0 0 8px rgba(0,0,0,0.4);
+  max-width: 340px;
+}
+
+.live-tracker-cta h3 {
+  margin: 0 0 0.4rem 0;
+  color: #ff9999;
+  font-size: 1.1rem;
+}
+
+.live-tracker-cta p {
+  font-size: 0.95rem;
+  margin: 0 0 0.8rem 0;
+  color: #ccc;
 }
